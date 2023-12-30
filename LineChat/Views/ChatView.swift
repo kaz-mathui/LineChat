@@ -52,9 +52,11 @@ extension ChatView {
                 scrollToLast(proxy: proxy)
             }
             .onChange(of: scrollTarget) {
-                scrollTarget = nil
-                withAnimation {
-                    scrollToLast(proxy: proxy)
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1){
+                    scrollTarget = nil
+                    withAnimation {
+                        scrollToLast(proxy: proxy)
+                    }
                 }
             }
             
@@ -82,13 +84,10 @@ extension ChatView {
                     , alignment: .trailing
                 )
                 .onTapGesture {
-                    print("タップされたよ")
                     scrollTarget = 0
                 }
                 .onSubmit {
                     sendMessage()
-                    print("メッセージ送られたよ")
-                    // メッセージ送った時に最後のメッセージを出すようにしたい
                     scrollTarget = 0
                 }
                 .focused($textFieldFocused)
@@ -127,7 +126,6 @@ extension ChatView {
         if !textFieldText.isEmpty {
             vm.addMessage(chatId: chat.id,text: textFieldText)
             textFieldText = ""
-            print("こっちは・・・？")
         }
     }
     
