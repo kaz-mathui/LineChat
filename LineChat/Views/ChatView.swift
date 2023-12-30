@@ -12,6 +12,7 @@ struct ChatView: View {
     let chat: Chat
     
     @State private var textFieldText: String = ""
+    @State private var scrollTarget: Int?
     @FocusState private var textFieldFocused: Bool
     @Environment(\.dismiss) private var dismiss
     
@@ -27,7 +28,7 @@ struct ChatView: View {
 }
 
 //#Preview {
-//    ChatView()
+//    ChatView(chat: chat)
 //}
 
 extension ChatView {
@@ -49,6 +50,14 @@ extension ChatView {
             }
             .onAppear {
                 scrollToLast(proxy: proxy)
+            }
+            .onChange(of: scrollTarget) { target in
+                if let target = target {
+                    scrollTarget = nil
+                    withAnimation {
+                        scrollToLast(proxy: proxy)
+                    }
+                }
             }
         }
     }
@@ -75,8 +84,8 @@ extension ChatView {
                 )
                 .onSubmit {
                     sendMessage()
-//                    scrollToLast(proxy: proxy)
-//                    メッセージ送った時に最後のメッセージを出すようにしたい
+                    // メッセージ送った時に最後のメッセージを出すようにしたい
+                    scrollTarget = 0
                 }
                 .focused($textFieldFocused)
             Image(systemName: "mic")
@@ -119,7 +128,7 @@ extension ChatView {
     
     private func scrollToLast(proxy: ScrollViewProxy) {
         if let lastMessage = chat.messages.last {
-            proxy.scrollTo(lastMessage.id, anchor: .bottom)
+            proxy.scrollTo(lastMessage.id, anchor: .zero)
         }
     }
 }
