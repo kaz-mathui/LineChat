@@ -16,7 +16,6 @@ struct ChatView: View {
     @Environment(\.dismiss) private var dismiss
     
     @EnvironmentObject var vm: ChatViewModel
-//    @ObservedObject var vm: ChatViewModel = ChatViewModel()
     
     var body: some View {
         VStack(spacing: 0) {
