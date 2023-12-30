@@ -51,14 +51,13 @@ extension ChatView {
             .onAppear {
                 scrollToLast(proxy: proxy)
             }
-            .onChange(of: scrollTarget) { target in
-                if let target = target {
-                    scrollTarget = nil
-                    withAnimation {
-                        scrollToLast(proxy: proxy)
-                    }
+            .onChange(of: scrollTarget) {
+                scrollTarget = nil
+                withAnimation {
+                    scrollToLast(proxy: proxy)
                 }
             }
+            
         }
     }
     
@@ -82,8 +81,13 @@ extension ChatView {
                     
                     , alignment: .trailing
                 )
+                .onTapGesture {
+                    print("タップされたよ")
+                    scrollTarget = 0
+                }
                 .onSubmit {
                     sendMessage()
+                    print("メッセージ送られたよ")
                     // メッセージ送った時に最後のメッセージを出すようにしたい
                     scrollTarget = 0
                 }
@@ -123,6 +127,7 @@ extension ChatView {
         if !textFieldText.isEmpty {
             vm.addMessage(chatId: chat.id,text: textFieldText)
             textFieldText = ""
+            print("こっちは・・・？")
         }
     }
     
