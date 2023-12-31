@@ -39,6 +39,7 @@ class ChatViewModel: ObservableObject {
     private func saveChatData(chatData: [Chat]) {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
+        // TODO ここダイレクトに指定してるのであとで直す
         let filePathStr = URL(fileURLWithPath:  "//Users/kaz/Documents/study/udemy/swiftui/LineChat/LineChat/DataServices/chatData.json")
 
         do {
