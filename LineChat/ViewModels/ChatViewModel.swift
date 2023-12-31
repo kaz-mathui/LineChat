@@ -38,18 +38,13 @@ class ChatViewModel: ObservableObject {
     
     private func saveChatData(chatData: [Chat]) {
         let encoder = JSONEncoder()
-        let fileName = "chatData.json"
         encoder.outputFormatting = .prettyPrinted
-        
-        guard let filePath = Bundle.main.url(forResource: fileName, withExtension: nil) else {
-            fatalError("\(fileName)が見つかりませんでした")
-        }
+        let filePathStr = URL(fileURLWithPath:  "//Users/kaz/Documents/study/udemy/swiftui/LineChat/LineChat/DataServices/chatData.json")
 
         do {
             let data = try encoder.encode(chatData)
             if let json = String(data: data, encoding: .utf8) {
-                try json.write(to: filePath, atomically: false, encoding: .utf8)
-                print("ここきてる？")
+                try json.write(to: filePathStr, atomically: true, encoding: .utf8)
             }
         } catch {
             print("Error saving chat data: \(error)")
