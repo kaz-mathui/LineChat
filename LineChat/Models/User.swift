@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct User: Decodable {
+struct User: Decodable, Encodable {
     let id: String
     let name: String
     let image: String

@@ -36,6 +36,26 @@ class ChatViewModel: ObservableObject {
         }
     }
     
+    private func saveChatData(chatData: [Chat]) {
+        let encoder = JSONEncoder()
+        let fileName = "chatData.json"
+        encoder.outputFormatting = .prettyPrinted
+        
+        guard let filePath = Bundle.main.url(forResource: fileName, withExtension: nil) else {
+            fatalError("\(fileName)が見つかりませんでした")
+        }
+
+        do {
+            let data = try encoder.encode(chatData)
+            if let json = String(data: data, encoding: .utf8) {
+                try json.write(to: filePath, atomically: false, encoding: .utf8)
+                print("ここきてる？")
+            }
+        } catch {
+            print("Error saving chat data: \(error)")
+        }
+    }
+    
     func addMessage(chatId: String, text: String) {
         
         guard let index = chatData.firstIndex(where: {chat in
@@ -54,6 +74,8 @@ class ChatViewModel: ObservableObject {
             readed: false
         )
         chatData[index].messages.append(newMessage)
+        
+        saveChatData(chatData: chatData)
     }
     
     func getTitle(messages: [Message]) -> String {
